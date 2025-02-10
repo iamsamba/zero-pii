@@ -1,0 +1,61 @@
+{
+  "verified": true,
+  "verifiedId": "vd1234",
+  "platform": "PSP",
+  "full_name": "Ethan Hunt",
+  "email": "john.doe@example.com",
+  "phone": "+1234567890",
+  "dob": "01-01-2000",
+  "marital_status": "Single",
+  "JobType": "",
+  "address": {
+    "current_address": {
+      "street": "1 MG Road",
+      "street_line_2": "Apt 12",
+      "city": "Bengaluru",
+      "state": "KA",
+      "zip": "560001",
+      "country": "India"
+    },
+    "permanent_address": {
+      "street": "1 MG Road",
+      "street_line_2": "Apt 12",
+      "city": "Bengaluru",
+      "state": "KA",
+      "zip": "560001",
+      "country": "India"
+    }
+  },
+  "passport": {
+    "passport_number": "N1111111",
+    "passport_name": "Ethan Hunt",
+    "passport_issue_date": "23/07/2015",
+    "passport_expiry_date": "22/07/2025",
+    "passport_dob": "01-01-2000",
+    "passport_address_line_1": "1 MG Road Apt 12 ",
+    "passport_address_line_2": "Bengaluru",
+    "passport_postal_code": "560001",
+    "passport_city": "Bengaluru",
+    "passport_state": "Karnataka",
+    "passport_country": "India"
+  },
+  "pan": {
+    "pan_number" :"AAAAA1111B",
+    "pan_dob": "01-01-2000"
+  },
+  "documents": [
+    {
+      "doc_type": "passport",
+      "doc_number": "X1234567",
+      "expiration_date": "01-01-2030",
+      "issued_country": "IND",
+      "image_url": "https://example.com/passport_image.png"
+    },
+    {
+      "doc_type": "pan",
+      "doc_number": "P123456789",
+      "expiration_date": "31-12-2025",
+      "issued_country": "IND"
+    }
+  ]
+}
