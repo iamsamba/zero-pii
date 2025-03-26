@@ -2,6 +2,13 @@ package main
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"time"
+	"zeropii/db"
+	"zeropii/models"
+	"zeropii/utils"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
@@ -10,12 +17,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"net/http"
-	"os"
-	"time"
-	"zeropii/db"
-	"zeropii/models"
-	"zeropii/utils"
 )
 
 var client *mongo.Client
@@ -59,7 +60,7 @@ func main() {
 	{
 		api.POST("/customers", createCustomer)
 		api.GET("/customers/:id", getCustomer)
-		//api.GET("/api/v1/customers/partner/:partnerID", "")
+		api.GET("/api/v1/customers/partner/:adminID", getCustomerByAdminID)
 	}
 
 	// Start the server
@@ -186,19 +187,19 @@ func getCustomer(c *gin.Context) {
 	logResponse(c, http.StatusOK, customer)
 }
 
-func getCustomerByPartnerID(c *gin.Context) {
-	partnerID := c.Param("partner_id")
+func getCustomerByAdminID(c *gin.Context) {
+	adminID := c.Param("admin_id")
 
-	if partnerID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Partner ID is required"})
+	if adminID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Admin ID is required"})
 		return
 	}
 
 	// Log the request to get a customer
 	log.Info().
-		Str("operation", "get_customer_by_partner_id").
-		Str("partner_id", partnerID).
-		Msg("Fetching customer details by partner")
+		Str("operation", "get_customer_by_admin_id").
+		Str("partner_id", adminID).
+		Msg("Fetching customer details by admin ID")
 
 	var customer models.Customer
 
@@ -210,7 +211,7 @@ func getCustomerByPartnerID(c *gin.Context) {
 	}
 
 	// Find by partner id
-	cur, err := customerCollection.Find(context.Background(), bson.M{"partner_id": partnerID})
+	cur, err := customerCollection.Find(context.Background(), bson.M{"admin_id": adminID})
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Customer not found"})
 		return

@@ -1,10 +1,8 @@
 package utils
 
 import (
-	"crypto/sha256"
 	"fmt"
 	"log"
-	"math/big"
 	"reflect"
 	"strings"
 )
@@ -238,24 +236,4 @@ func maskEmail(email string) string {
 	}
 
 	return localPart + "@" + domainPart
-}
-
-// generateAccountNumber generates a 15-digit account number based on customer_id within a specific range.
-func generateAccountNumber(customerID string) (string, error) {
-	// Define the range
-	minR := int64(100000000000000)
-	maxR := int64(999999999999999)
-	rangeSize := maxR - minR + 1
-
-	// Hash the customer ID
-	hash := sha256.Sum256([]byte(customerID))
-	hashInt := new(big.Int).SetBytes(hash[:])
-
-	// Ensure the generated number falls within the specified range
-	accountNumber := new(big.Int).Mod(hashInt, big.NewInt(rangeSize))
-	accountNumber.Add(accountNumber, big.NewInt(minR)) // Adjust with the minimum offset
-
-	// Convert to string and ensure it’s 15 digits with padding if needed
-	accountNumberStr := fmt.Sprintf("%015d", accountNumber)
-	return accountNumberStr, nil
 }
