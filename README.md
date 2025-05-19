@@ -20,27 +20,10 @@ A quick and easy way to handle PII (Personally Identifiable Information).
 - Easy integration with existing applications
 
 ## Installation
-To install `zero-pii`, you can use pip:
 
-```sh
-pip install zero-pii
-```
 
 ## Usage
-```python
-import zero_pii
 
-# Example data containing PII
-data = {
-    "name": "John Doe",
-    "email": "john.doe@example.com",
-    "phone": "123-456-7890"
-}
-
-# Mask PII
-masked_data = zero_pii.mask(data)
-print(masked_data)
-```
 
 ## Contributing
 Contributions are welcome! Please follow these steps to contribute:
