@@ -32,5 +32,5 @@ func InitMongoDB() {
 	if err2 != nil {
 		log.Fatal().Err(err2).Msg("Failed to connect to MongoDB: %v")
 	}
-	customerCollection = client.Database("onboarding").Collection("customer")
+	customerCollection = client.Database("zeropii").Collection("customer")
 }

@@ -1,9 +1,9 @@
 {
   "verified": true,
   "verifiedId": "vd1234",
-  "platform": "PSP",
+  "platform": "internal",
   "full_name": "Ethan Hunt",
-  "email": "john.doe@example.com",
+  "email": "ethan.hunt@example.com",
   "phone": "+1234567890",
   "dob": "01-01-2000",
   "marital_status": "Single",
