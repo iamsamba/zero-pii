@@ -1,0 +1,3 @@
+{"level":"error","error":"EOF","operation":"create_customer","time":"2025-04-02T10:53:37+05:30","message":"Failed to bind customer JSON"}
+{"level":"info","method":"POST","path":"/api/v1/onboarding/customers","client_ip":"::1","user_agent":"PostmanRuntime/7.43.3","status":400,"duration":1.965583,"time":"2025-04-02T10:53:37+05:30","message":"incoming request"}
+{"level":"info","operation":"create_customer","name":"Ethan Hunt","email":"john.doe@example.com","time":"2025-04-02T11:03:49+05:30","message":"Creating new customer"}

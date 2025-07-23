@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zero-pii
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zero-pii
+  template:
+    metadata:
+      labels:
+        app: zero-pii
+    spec:
+      containers:
+      - name: zero-pii
+        image: <your-aws-account-id>.dkr.ecr.<region>.amazonaws.com/<repo-name>:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zero-pii-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: zero-pii
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

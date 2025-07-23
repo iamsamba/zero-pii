@@ -11,7 +11,7 @@ A quick and easy way to handle PII (Personally Identifiable Information).
 - [License](#license)
 
 ## Introduction
-`zero-pii` is a library designed to help developers handle and manage PII in their applications. It provides tools to identify, mask, and securely store PII, ensuring compliance with privacy regulations.
+`zero-pii` designed to help developers handle and manage PII in their applications. It provides API first approach to identify, mask, and securely store PII, ensuring compliance with privacy regulations.
 
 ## Features
 - Identify PII in datasets
@@ -20,27 +20,152 @@ A quick and easy way to handle PII (Personally Identifiable Information).
 - Easy integration with existing applications
 
 ## Installation
-To install `zero-pii`, you can use pip:
+## AWS EKS Deployment
+
+### Build and Push Docker Image
 
 ```sh
-pip install zero-pii
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.<region>.amazonaws.com
+docker build -t <repo-name>:latest .
+docker tag <repo-name>:latest <your-aws-account-id>.dkr.ecr.<region>.amazonaws.com/<repo-name>:latest
+docker push <your-aws-account-id>.dkr.ecr.<region>.amazonaws.com/<repo-name>:latest
 ```
 
-## Usage
-```python
-import zero_pii
+### Deploy to EKS
 
-# Example data containing PII
-data = {
-    "name": "John Doe",
-    "email": "john.doe@example.com",
-    "phone": "123-456-7890"
-}
+1. Update the image in `deployment.yaml` with your ECR image URI.
+2. Apply the deployment:
 
-# Mask PII
-masked_data = zero_pii.mask(data)
-print(masked_data)
+```sh
+kubectl apply -f deployment.yaml
 ```
+
+3. The service will be exposed via a LoadBalancer. Get the external URL with:
+
+```sh
+kubectl get svc zero-pii-service
+```
+## GCP GKE Deployment
+
+### Prerequisites
+
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+- A Google Cloud project with billing enabled
+- [GKE API enabled](https://console.cloud.google.com/marketplace/product/google/container.googleapis.com)
+- Docker installed and authenticated with Google Cloud
+
+### Build and Push Docker Image to Google Container Registry (GCR)
+
+```sh
+# Set your project ID
+export PROJECT_ID=<your-gcp-project-id>
+export IMAGE_NAME=zero-pii
+
+# Authenticate Docker to GCR
+gcloud auth configure-docker
+
+# Build the Docker image
+docker build -t gcr.io/$PROJECT_ID/$IMAGE_NAME:latest .
+
+# Push the image to GCR
+docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+```
+
+### Deploy to GKE
+
+1. Create a GKE cluster (if you don't have one):
+
+    ```sh
+    gcloud container clusters create zero-pii-cluster --zone <your-zone>
+    gcloud container clusters get-credentials zero-pii-cluster --zone <your-zone>
+    ```
+
+2. Update the `image` field in your `deployment.yaml` to use your GCR image URI:  
+   `gcr.io/<your-gcp-project-id>/zero-pii:latest`
+
+3. Apply the deployment:
+
+    ```sh
+    kubectl apply -f deployment.yaml
+    ```
+
+4. Expose your service (if not already exposed):
+
+    ```sh
+    kubectl expose deployment zero-pii --type=LoadBalancer --port 80 --target-port 8080
+    ```
+
+5. Get the external IP:
+
+    ```sh
+    kubectl get service zero-pii
+    ```
+
+---
+
+**Be sure to update your `deployment.yaml` image field as described above.**
+
+Let me know if you want the `deployment.yaml` example for GKE or further customization!## GCP GKE Deployment
+
+### Prerequisites
+
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+- A Google Cloud project with billing enabled
+- [GKE API enabled](https://console.cloud.google.com/marketplace/product/google/container.googleapis.com)
+- Docker installed and authenticated with Google Cloud
+
+### Build and Push Docker Image to Google Container Registry (GCR)
+
+```sh
+# Set your project ID
+export PROJECT_ID=<your-gcp-project-id>
+export IMAGE_NAME=zero-pii
+
+# Authenticate Docker to GCR
+gcloud auth configure-docker
+
+# Build the Docker image
+docker build -t gcr.io/$PROJECT_ID/$IMAGE_NAME:latest .
+
+# Push the image to GCR
+docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+```
+
+### Deploy to GKE
+
+1. Create a GKE cluster (if you don't have one):
+
+    ```sh
+    gcloud container clusters create zero-pii-cluster --zone <your-zone>
+    gcloud container clusters get-credentials zero-pii-cluster --zone <your-zone>
+    ```
+
+2. Update the `image` field in your `deployment.yaml` to use your GCR image URI:  
+   `gcr.io/<your-gcp-project-id>/zero-pii:latest`
+
+3. Apply the deployment:
+
+    ```sh
+    kubectl apply -f deployment.yaml
+    ```
+
+4. Expose your service (if not already exposed):
+
+    ```sh
+    kubectl expose deployment zero-pii --type=LoadBalancer --port 80 --target-port 8080
+    ```
+
+5. Get the external IP:
+
+    ```sh
+    kubectl get service zero-pii
+    ```
+
+---
+
+**Be sure to update your `deployment.yaml` image field as described above.**
+
+Let me know if you want the `deployment.yaml` example for GKE or further customization!
 
 ## Contributing
 Contributions are welcome! Please follow these steps to contribute:
